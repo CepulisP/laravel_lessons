@@ -22,3 +22,5 @@ Route::resource('test', 'App\Http\Controllers\TestController');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::resource('/ad', 'App\Http\Controllers\AdController');
