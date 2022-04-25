@@ -6,7 +6,6 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ __('Create an ad') }}</div>
-
                     <div class="card-body">
                         <form class="form" method="post" action="{{ route('ad.store') }}">
                             @csrf
@@ -29,6 +28,15 @@
                                         <option value="{{ $type->id }}">{{ $type->name }}</option>
                                     @endforeach
                                 </select>
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 <input type="submit" value="Create" class="btn btn-primary">
                             </div>
                         </form>

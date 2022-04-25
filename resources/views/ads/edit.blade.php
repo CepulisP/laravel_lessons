@@ -6,7 +6,6 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ __('Edit your ad') }}</div>
-
                     <div class="card-body">
                         <form class="form" method="post" action="{{ route('ad.update', $ad->id) }}">
                             @csrf
@@ -38,6 +37,15 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 <input type="submit" value="Update" class="btn btn-primary">
                             </div>
                         </form>
