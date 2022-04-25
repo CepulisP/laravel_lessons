@@ -24,7 +24,14 @@ class StoreAdRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+                'title' => 'required|max:255',
+                'content' => 'required',
+                'price' => 'required|numeric',
+                'years' => 'required|numeric',
+                'image' => 'required|max:255',
+                'vin' => 'required|min:11|max:17',
+                'type_id' => 'required|numeric',
+                'color_id' => 'required|numeric'
         ];
     }
 }

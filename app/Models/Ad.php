@@ -16,6 +16,20 @@ class Ad extends Model
 
     }
 
+    public function manufacturer()
+    {
+
+        return $this->hasOne(Manufacturer::class, 'id', 'manufacturer_id');
+
+    }
+
+    public function carModel()
+    {
+
+        return $this->hasOne(CarModel::class, 'id', 'model_id');
+
+    }
+
     public function color()
     {
 

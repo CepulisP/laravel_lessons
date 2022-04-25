@@ -28,6 +28,8 @@
                                 <li>{{ $ad->years }}</li>
                                 <li>{{ $ad->vin }}</li>
                                 <li>{{ $ad->color->name }}</li>
+                                <li>{{ $ad->manufacturer->name }}</li>
+                                <li>{{ $ad->carModel->name }}</li>
                             </ul>
                         </div>
                     </div>

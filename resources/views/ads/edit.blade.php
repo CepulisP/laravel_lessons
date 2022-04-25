@@ -6,7 +6,6 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ __('Edit your ad') }}</div>
-
                     <div class="card-body">
                         <form class="form" method="post" action="{{ route('ad.update', $ad->id) }}">
                             @csrf
@@ -38,6 +37,35 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                <select name="manufacturer_id" class="form-control">
+                                    @foreach($manufacturers as $manufacturer)
+                                        <option
+                                            @if ($ad->manufacturer_id == $manufacturer->id)
+                                            selected
+                                            @endif
+                                            value="{{ $manufacturer->id }}">{{ $manufacturer->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <select name="model_id" class="form-control">
+                                    @foreach($carModels as $model)
+                                        <option
+                                            @if ($ad->model_id == $model->id)
+                                            selected
+                                            @endif
+                                            value="{{ $model->id }}">{{ $model->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 <input type="submit" value="Update" class="btn btn-primary">
                             </div>
                         </form>
