@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Ad;
 use App\Http\Requests\StoreAdRequest;
 use App\Http\Requests\UpdateAdRequest;
+use App\Models\CarModel;
 use App\Models\Color;
+use App\Models\Manufacturer;
 use App\Models\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -31,6 +33,8 @@ class AdController extends Controller
 
         $data['colors'] = Color::all();
         $data['types'] = Type::all();
+        $data['manufacturers'] = Manufacturer::all();
+        $data['carModels'] = CarModel::all();
 
         return view('ads.form', $data);
 
@@ -57,11 +61,11 @@ class AdController extends Controller
         $ad->user_id = Auth::id();
         $ad->views = 0;
         $ad->active = 1;
-        $ad->model_id = 1;
+        $ad->model_id = $request->post('model_id');
         $ad->type_id = $request->post('type_id');
         $ad->category_id = 1;
         $ad->color_id = $request->post('color_id');
-        $ad->manufacturer_id = 1;
+        $ad->manufacturer_id = $request->post('manufacturer_id');
 
         $ad->save();
 
@@ -94,6 +98,8 @@ class AdController extends Controller
         $data['ad'] = $ad;
         $data['colors'] = Color::all();
         $data['types'] = Type::all();
+        $data['manufacturers'] = Manufacturer::all();
+        $data['carModels'] = CarModel::all();
 
         return view('ads.edit', $data);
 
@@ -117,11 +123,11 @@ class AdController extends Controller
         $ad->vin = $request->post('vin');
         $ad->user_id = Auth::id();
         $ad->active = 1;
-        $ad->model_id = 1;
+        $ad->model_id = $request->post('model_id');
         $ad->type_id = $request->post('type_id');
         $ad->category_id = 1;
         $ad->color_id = $request->post('color_id');
-        $ad->manufacturer_id = 1;
+        $ad->manufacturer_id = $request->post('manufacturer_id');
 
         $ad->save();
 

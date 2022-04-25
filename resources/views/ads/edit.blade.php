@@ -37,6 +37,26 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                <select name="manufacturer_id" class="form-control">
+                                    @foreach($manufacturers as $manufacturer)
+                                        <option
+                                            @if ($ad->manufacturer_id == $manufacturer->id)
+                                            selected
+                                            @endif
+                                            value="{{ $manufacturer->id }}">{{ $manufacturer->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <select name="model_id" class="form-control">
+                                    @foreach($carModels as $model)
+                                        <option
+                                            @if ($ad->model_id == $model->id)
+                                            selected
+                                            @endif
+                                            value="{{ $model->id }}">{{ $model->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul>

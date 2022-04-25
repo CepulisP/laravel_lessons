@@ -28,6 +28,18 @@
                                         <option value="{{ $type->id }}">{{ $type->name }}</option>
                                     @endforeach
                                 </select>
+                                <select name="manufacturer_id" class="form-control">
+                                    <option selected>Select manufacturer</option>
+                                    @foreach($manufacturers as $manufacturer)
+                                        <option value="{{ $manufacturer->id }}">{{ $manufacturer->name }}</option>
+                                    @endforeach
+                                </select>
+                                <select name="model_id" class="form-control">
+                                    <option selected>Select model</option>
+                                    @foreach($carModels as $model)
+                                        <option value="{{ $model->id }}">{{ $model->name }}</option>
+                                    @endforeach
+                                </select>
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul>
