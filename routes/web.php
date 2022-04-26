@@ -22,3 +22,5 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('/ad', 'App\Http\Controllers\AdController');
+
+Route::post('/getmodels', [App\Http\Controllers\AdController::class, 'getModels'])->name('getmodels');

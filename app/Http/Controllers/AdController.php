@@ -99,7 +99,10 @@ class AdController extends Controller
         $data['colors'] = Color::all();
         $data['types'] = Type::all();
         $data['manufacturers'] = Manufacturer::all();
-        $data['carModels'] = CarModel::all();
+
+        $man = Manufacturer::findOrFail($ad->manufacturer_id);
+
+        $data['carModels'] = $man->carModels;
 
         return view('ads.edit', $data);
 
@@ -144,5 +147,32 @@ class AdController extends Controller
     public function destroy(Ad $ad)
     {
         //
+    }
+
+    public function getModels()
+    {
+
+        $manufacturerId = 0;
+
+        if(isset($_POST['manufac'])){
+            $manufacturerId = $_POST['manufac'];
+        }
+
+        $models = [];
+
+        if($manufacturerId > 0) {
+
+            $man = Manufacturer::findOrFail($manufacturerId);
+
+            foreach ($man->carModels as $model) {
+
+                $models[] = ['id' => $model['id'], 'name' => $model['name']];
+
+            }
+
+        }
+
+        return json_encode($models);
+
     }
 }

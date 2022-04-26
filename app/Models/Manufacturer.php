@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Manufacturer extends Model
 {
     use HasFactory;
+
+    public function carModels()
+    {
+
+        return $this->hasMany(CarModel::class, 'manufacturer_id', 'id');
+
+    }
 }
