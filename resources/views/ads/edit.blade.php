@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -37,7 +44,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <select name="manufacturer_id" class="form-control">
+                                <select name="manufacturer_id" id="sel_manufacs" class="form-control">
                                     @foreach($manufacturers as $manufacturer)
                                         <option
                                             @if ($ad->manufacturer_id == $manufacturer->id)
@@ -47,7 +54,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <select name="model_id" class="form-control">
+                                <select name="model_id" id="sel_models" class="form-control">
                                     @foreach($carModels as $model)
                                         <option
                                             @if ($ad->model_id == $model->id)
@@ -69,6 +76,35 @@
                                 <input type="submit" value="Update" class="btn btn-primary">
                             </div>
                         </form>
+                        <script>
+                            $(document).ready(function(){
+
+                                $("#sel_manufacs").change(function(){
+                                    var manId = $(this).val();
+
+                                    $.ajax({
+                                        url: '{{ route('getmodels') }}',
+                                        type: 'POST',
+                                        data: {manufac:manId},
+                                        dataType: 'json',
+                                        success:function(response){
+
+                                            var len = response.length;
+
+                                            $("#sel_models").empty();
+                                            for( var i = 0; i<len; i++){
+                                                var id = response[i]['id'];
+                                                var name = response[i]['name'];
+
+                                                $("#sel_models").append("<option value='"+id+"'>"+name+"</option>");
+
+                                            }
+                                        }
+                                    });
+                                });
+
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
