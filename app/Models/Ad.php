@@ -43,4 +43,11 @@ class Ad extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
 
     }
+
+    public function comments()
+    {
+
+        return $this->hasMany(Comment::class, 'ad_id', 'id');
+
+    }
 }

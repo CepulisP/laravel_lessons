@@ -44,6 +44,45 @@
                     </div>
                 </div>
             </div>
+            <div class="col-7" style="margin: 0 auto 0 auto">
+                <form class="form" method="post" action="{{ route('comment.store') }}">
+                    @csrf
+                    <div class="form-group">
+                        <h4 class="text-center">Leave a comment</h4>
+                        <textarea name="content" msg cols="30" rows="5" class="form-control" placeholder="Message"></textarea>
+                        <input type="hidden" name="ad_id" value="{{ $ad->id }}">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" id="post" class="btn btn-primary text" value="Post Comment">
+                    </div>
+                </form>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div>
+            @foreach($comments as $comment)
+                <div class="col-7">
+                    <div class="card">
+                        <div class="card-header row">
+                            <div class="col-6">
+                                {{ ucfirst($comment->user->name) }}
+                            </div>
+                            <div class="col-6 text-end">
+                                {{ ucfirst($comment->created_at) }}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>{{ $comment->content }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 @endsection

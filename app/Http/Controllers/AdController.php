@@ -21,7 +21,11 @@ class AdController extends Controller
      */
     public function index()
     {
-        //
+
+        $data['ads'] = Ad::all();
+
+        return view('ads.list', $data);
+
     }
 
     /**
@@ -69,6 +73,8 @@ class AdController extends Controller
 
         $ad->save();
 
+        return redirect('/ad/' . $ad->id);
+
     }
 
     /**
@@ -81,6 +87,7 @@ class AdController extends Controller
     {
 
         $data['ad'] = $ad;
+        $data['comments'] = $ad->comments;
 
         return view('ads.single', $data);
 
@@ -152,12 +159,7 @@ class AdController extends Controller
     public function getModels()
     {
 
-        $manufacturerId = 0;
-
-        if(isset($_POST['manufac'])){
-            $manufacturerId = $_POST['manufac'];
-        }
-
+        $manufacturerId = $_POST['manufac'] ?? 0;
         $models = [];
 
         if($manufacturerId > 0) {

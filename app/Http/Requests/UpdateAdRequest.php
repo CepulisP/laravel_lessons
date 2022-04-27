@@ -31,7 +31,9 @@ class UpdateAdRequest extends FormRequest
             'image' => 'required|max:255',
             'vin' => 'required|min:11|max:17',
             'type_id' => 'required|numeric',
-            'color_id' => 'required|numeric'
+            'color_id' => 'required|numeric',
+            'manufacturer_id' => 'required|numeric',
+            'model_id' => 'required|numeric'
         ];
     }
 }

@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'landingpage'])->name('homepage');
 
 Auth::routes();
 
@@ -24,3 +22,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('/ad', 'App\Http\Controllers\AdController');
 
 Route::post('/getmodels', [App\Http\Controllers\AdController::class, 'getModels'])->name('getmodels');
+
+Route::get('/profile/ads', [App\Http\Controllers\UserPanelController::class, 'myAds'])->name('profile.ads');
+
+Route::resource('/comment', 'App\Http\Controllers\CommentController');
