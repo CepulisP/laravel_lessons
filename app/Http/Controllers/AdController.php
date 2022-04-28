@@ -9,6 +9,7 @@ use App\Models\CarModel;
 use App\Models\Color;
 use App\Models\Manufacturer;
 use App\Models\Type;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -19,10 +20,10 @@ class AdController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $data['ads'] = Ad::all();
+        $data['ads'] =Ad::where('active', 1)->filter($request)->get();
 
         return view('ads.list', $data);
 
@@ -85,6 +86,9 @@ class AdController extends Controller
      */
     public function show(Ad $ad)
     {
+
+        $ad->views = $ad->views + 1;
+        $ad->save();
 
         $data['ad'] = $ad;
         $data['comments'] = $ad->comments;
@@ -153,7 +157,12 @@ class AdController extends Controller
      */
     public function destroy(Ad $ad)
     {
-        //
+
+        $ad->active = 0;
+        $ad->save();
+
+        return redirect('/profile/ads');
+
     }
 
     public function getModels()

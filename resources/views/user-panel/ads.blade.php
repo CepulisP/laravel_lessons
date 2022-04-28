@@ -10,6 +10,7 @@
                     <th scope="col">Title</th>
                     <th scope="col">Views</th>
                     <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -19,6 +20,11 @@
                             <td>{{ $ad->title }}</td>
                             <td>{{ $ad->views }}</td>
                             <td><a href="{{ route('ad.edit', $ad->id) }}">Edit</a></td>
+                            <form method="POST" action="{{ route('ad.destroy', $ad->id) }}">
+                                @csrf
+                                @method('DELETE')
+                                <td><input type="submit" value="Delete"></td>
+                            </form>
                         </tr>
                     @endforeach
                 </tbody>

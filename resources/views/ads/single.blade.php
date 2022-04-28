@@ -11,7 +11,7 @@
                         <div class="col-6">
                             <img src="{{ $ad->image }}">
                         </div>
-                        <div class="col-6">
+                        <div class="col-12">
                             <p>
                                 {{ ucfirst($ad->content) }}
                             </p>
@@ -44,7 +44,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-7" style="margin: 0 auto 0 auto">
+            <div class="col-7">
                 <form class="form" method="post" action="{{ route('comment.store') }}">
                     @csrf
                     <div class="form-group">
@@ -52,19 +52,19 @@
                         <textarea name="content" msg cols="30" rows="5" class="form-control" placeholder="Message"></textarea>
                         <input type="hidden" name="ad_id" value="{{ $ad->id }}">
                     </div>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="form-group">
                         <input type="submit" id="post" class="btn btn-primary text" value="Post Comment">
                     </div>
                 </form>
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
             </div>
             @foreach($comments as $comment)
                 <div class="col-7">
