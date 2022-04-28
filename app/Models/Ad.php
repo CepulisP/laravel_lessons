@@ -16,6 +16,25 @@ class Ad extends Model
         return (new AdFilter($request))->filter($builder);
     }
 
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope('active', function (Builder $builder) {
+            $builder->where('active', '=', 1);
+        });
+    }
+
     public function type()
     {
 

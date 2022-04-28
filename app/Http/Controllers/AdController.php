@@ -23,7 +23,7 @@ class AdController extends Controller
     public function index(Request $request)
     {
 
-        $data['ads'] =Ad::where('active', 1)->filter($request)->get();
+        $data['ads'] =Ad::filter($request)->get();
 
         return view('ads.list', $data);
 
@@ -54,27 +54,25 @@ class AdController extends Controller
     public function store(StoreAdRequest $request)
     {
 
-        $ad = new Ad();
+        Ad::create([
+            'title' => $request->post('title'),
+            'slug' => Str::slug($request->post('title')),
+            'content' => $request->post('content'),
+            'years' => $request->post('years'),
+            'price' => $request->post('price'),
+            'image' => $request->post('image'),
+            'vin' => $request->post('vin'),
+            'user_id' => Auth::id(),
+            'views' => 0,
+            'active' => 1,
+            'model_id' => $request->post('model_id'),
+            'type_id' => $request->post('type_id'),
+            'category_id' => 1,
+            'color_id' => $request->post('color_id'),
+            'manufacturer_id' => $request->post('manufacturer_id')
+        ]);
 
-        $ad->title = $request->post('title');
-        $ad->slug = Str::slug($ad->title);
-        $ad->content = $request->post('content');
-        $ad->years = $request->post('years');
-        $ad->price = $request->post('price');
-        $ad->image = $request->post('image');
-        $ad->vin = $request->post('vin');
-        $ad->user_id = Auth::id();
-        $ad->views = 0;
-        $ad->active = 1;
-        $ad->model_id = $request->post('model_id');
-        $ad->type_id = $request->post('type_id');
-        $ad->category_id = 1;
-        $ad->color_id = $request->post('color_id');
-        $ad->manufacturer_id = $request->post('manufacturer_id');
-
-        $ad->save();
-
-        return redirect('/ad/' . $ad->id);
+        return redirect('/');
 
     }
 
@@ -129,23 +127,23 @@ class AdController extends Controller
     public function update(UpdateAdRequest $request, Ad $ad)
     {
 
-        $ad->title = $request->post('title');
-        $ad->content = $request->post('content');
-        $ad->years = $request->post('years');
-        $ad->price = $request->post('price');
-        $ad->image = $request->post('image');
-        $ad->vin = $request->post('vin');
-        $ad->user_id = Auth::id();
-        $ad->active = 1;
-        $ad->model_id = $request->post('model_id');
-        $ad->type_id = $request->post('type_id');
-        $ad->category_id = 1;
-        $ad->color_id = $request->post('color_id');
-        $ad->manufacturer_id = $request->post('manufacturer_id');
+        $ad->update([
+            'title' => $request->post('title'),
+            'content' => $request->post('content'),
+            'years' => $request->post('years'),
+            'price' => $request->post('price'),
+            'image' => $request->post('image'),
+            'vin' => $request->post('vin'),
+            'user_id' => Auth::id(),
+            'active' => 1,
+            'model_id' => $request->post('model_id'),
+            'type_id' => $request->post('type_id'),
+            'category_id' => 1,
+            'color_id' => $request->post('color_id'),
+            'manufacturer_id' => $request->post('manufacturer_id')
+        ]);
 
-        $ad->save();
-
-        return redirect('/ad/' . $ad->id . '/edit');
+        return redirect('/');
 
     }
 
@@ -158,8 +156,9 @@ class AdController extends Controller
     public function destroy(Ad $ad)
     {
 
-        $ad->active = 0;
-        $ad->save();
+        $ad->update([
+            'active' => 0
+        ]);
 
         return redirect('/profile/ads');
 

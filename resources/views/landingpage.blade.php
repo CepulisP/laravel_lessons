@@ -6,31 +6,33 @@
             <h3>Popular ads</h3>
             @foreach($popAds as $ad)
                 <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-header">{{ $ad->title }}</div>
-                        <div class="card-body">
-                            <img class="img-fluid" src="{{ $ad->image }}">
+                    <a class="text-decoration-none text-reset" href="{{ route('ad.show', $ad->id) }}">
+                        <div class="card">
+                            <b class="card-header font-weight-bold">{{ $ad->title }}</b>
+                            <div class="card-body">
+                                <img class="img-fluid" src="{{ $ad->image }}">
+                            </div>
+                            <div class="card-footer text-end">
+                                <span>{{ $ad->price }}€</span>
+                            </div>
                         </div>
-                        <div class="card-footer">
-                            <span id="lolol">{{ $ad->price }}€</span>
-                            <a class="btn btn-primary float-end" href="{{ route('ad.show', $ad->id) }}">Read more</a>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             @endforeach
             <h3>Newest ads</h3>
             @foreach($newAds as $ad)
                 <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-header">{{ $ad->title }}</div>
-                        <div class="card-body">
-                            <img class="img-fluid" src="{{ $ad->image }}">
+                    <a class="text-decoration-none text-reset" href="{{ route('ad.show', $ad->id) }}">
+                        <div class="card">
+                            <b class="card-header">{{ $ad->title }}</b>
+                            <div class="card-body">
+                                <img class="img-fluid" src="{{ $ad->image }}">
+                            </div>
+                            <div class="card-footer text-end">
+                                <span>{{ $ad->price }}€</span>
+                            </div>
                         </div>
-                        <div class="card-footer">
-                            <span id="lolol">{{ $ad->price }}€</span>
-                            <a class="btn btn-primary float-end" href="{{ route('ad.show', $ad->id) }}">Read more</a>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             @endforeach
         </div>
