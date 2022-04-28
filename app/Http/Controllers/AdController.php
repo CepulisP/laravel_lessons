@@ -9,6 +9,7 @@ use App\Models\CarModel;
 use App\Models\Color;
 use App\Models\Manufacturer;
 use App\Models\Type;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -19,10 +20,10 @@ class AdController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $data['ads'] = Ad::where('active', 1)->get();
+        $data['ads'] =Ad::where('active', 1)->filter($request)->get();
 
         return view('ads.list', $data);
 

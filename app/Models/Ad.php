@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
+use App\Filters\AdFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Ad extends Model
 {
     use HasFactory;
+
+    public function scopeFilter(Builder $builder, $request)
+    {
+        return (new AdFilter($request))->filter($builder);
+    }
 
     public function type()
     {
