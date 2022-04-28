@@ -22,7 +22,7 @@ class AdController extends Controller
     public function index()
     {
 
-        $data['ads'] = Ad::all();
+        $data['ads'] = Ad::where('active', 1)->get();
 
         return view('ads.list', $data);
 
@@ -85,6 +85,9 @@ class AdController extends Controller
      */
     public function show(Ad $ad)
     {
+
+        $ad->views = $ad->views + 1;
+        $ad->save();
 
         $data['ad'] = $ad;
         $data['comments'] = $ad->comments;
@@ -153,7 +156,12 @@ class AdController extends Controller
      */
     public function destroy(Ad $ad)
     {
-        //
+
+        $ad->active = 0;
+        $ad->save();
+
+        return redirect('/profile/ads');
+
     }
 
     public function getModels()
