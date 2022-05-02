@@ -7,6 +7,7 @@ use App\Http\Requests\StoreAdRequest;
 use App\Http\Requests\UpdateAdRequest;
 use App\Models\CarModel;
 use App\Models\Color;
+use App\Models\Comment;
 use App\Models\Manufacturer;
 use App\Models\Type;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class AdController extends Controller
     public function index(Request $request)
     {
 
-        $data['ads'] =Ad::filter($request)->get();
+        $data['ads'] =Ad::filter($request)->paginate(8);
 
         return view('ads.list', $data);
 
@@ -72,7 +73,7 @@ class AdController extends Controller
             'manufacturer_id' => $request->post('manufacturer_id')
         ]);
 
-        return redirect('/');
+        return redirect('/')->route('homepage');
 
     }
 
@@ -89,7 +90,7 @@ class AdController extends Controller
         $ad->save();
 
         $data['ad'] = $ad;
-        $data['comments'] = $ad->comments;
+        $data['comments'] = Comment::where('ad_id', $ad->id)->paginate(10);
 
         return view('ads.single', $data);
 
@@ -143,7 +144,7 @@ class AdController extends Controller
             'manufacturer_id' => $request->post('manufacturer_id')
         ]);
 
-        return redirect('/');
+        return redirect()->route('homepage');
 
     }
 
@@ -160,7 +161,7 @@ class AdController extends Controller
             'active' => 0
         ]);
 
-        return redirect('/profile/ads');
+        return redirect()->route('profile.ads');
 
     }
 

@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <h3>Popular ads</h3>
+            <h3>Unpopular ads</h3>
             @foreach($popAds as $ad)
                 <div class="col-md-3">
                     <a class="text-decoration-none text-reset" href="{{ route('ad.show', $ad->id) }}">
@@ -19,7 +19,7 @@
                     </a>
                 </div>
             @endforeach
-            <h3>Newest ads</h3>
+            <h3>Oldest ads</h3>
             @foreach($newAds as $ad)
                 <div class="col-md-3">
                     <a class="text-decoration-none text-reset" href="{{ route('ad.show', $ad->id) }}">

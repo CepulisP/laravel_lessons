@@ -29,6 +29,7 @@
                     </a>
                 </div>
             @endforeach
+            {{ $ads->links('pagination::bootstrap-4') }}
         </div>
     </div>
 @endsection

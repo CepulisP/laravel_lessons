@@ -46,7 +46,7 @@ class CommentController extends Controller
 
         $comment->save();
 
-        return redirect('/ad/' . $comment->ad_id);
+        return redirect()->route('ad.show', [$comment->ad_id]);
 
     }
 

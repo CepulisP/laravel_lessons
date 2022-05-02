@@ -35,6 +35,13 @@ class Ad extends Model
         });
     }
 
+    public function comments()
+    {
+
+        return $this->hasMany(Comment::class, 'ad_id', 'id');
+
+    }
+
     public function type()
     {
 
@@ -70,10 +77,4 @@ class Ad extends Model
 
     }
 
-    public function comments()
-    {
-
-        return $this->hasMany(Comment::class, 'ad_id', 'id');
-
-    }
 }

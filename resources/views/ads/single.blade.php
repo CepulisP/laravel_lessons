@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -9,7 +9,7 @@
 
                     <div class="card-body">
                         <div class="col-6">
-                            <img src="{{ $ad->image }}">
+                            <img class="img-fluid w-100" src="{{ $ad->image }}">
                         </div>
                         <div class="col-12">
                             <p>
@@ -83,6 +83,7 @@
                     </div>
                 </div>
             @endforeach
+            {{ $comments->links('pagination::bootstrap-4') }}
         </div>
     </div>
 @endsection
