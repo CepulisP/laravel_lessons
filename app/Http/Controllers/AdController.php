@@ -73,7 +73,7 @@ class AdController extends Controller
             'manufacturer_id' => $request->post('manufacturer_id')
         ]);
 
-        return redirect('/')->route('homepage');
+        return redirect()->route('homepage');
 
     }
 
