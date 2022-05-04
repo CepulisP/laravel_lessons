@@ -62,7 +62,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('inbox.index') }}">Messages</a>
+                                    <a class="dropdown-item" href="{{ route('inbox.index') }}">Messages{{ $unseen }}</a>
                                     <a class="dropdown-item" href="{{ route('inbox.create') }}">New message</a>
                                     <a class="dropdown-item" href="{{ route('ad.create') }}">Add new Ad</a>
                                     <a class="dropdown-item" href="{{ route('profile.ads') }}">My Ads</a>

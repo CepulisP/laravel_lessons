@@ -11,6 +11,12 @@ use Illuminate\Support\Str;
 
 class MessageController extends Controller
 {
+
+    public function __contruct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +27,7 @@ class MessageController extends Controller
 
         $messages = Message::where('sender_id', Auth::id())->orWhere('recipient_id', Auth::id())->get();
 
-        $chats = [];
+        $chat = [];
 
         foreach ($messages as $message) {
 
@@ -48,16 +54,16 @@ class MessageController extends Controller
                 $chatFriendId = $message->sender_id;
 
             }
-            //TODO add full objects instead to reduce the number of assignments
-            $chats[$key]['latest_sender'] = $sender;
-            $chats[$key]['chat_friend']['name'] = $chatFriend;
-            $chats[$key]['chat_friend']['id'] = $chatFriendId;
-            $chats[$key]['latest_msg']['content'] = $message->content;
-            $chats[$key]['latest_msg']['date'] = $message->created_at;
+            //TODO add full objects instead to reduce the number of assignments, remake key to only one id
+            $chat[$key]['latest_sender'] = $sender;
+            $chat[$key]['chat_friend']['name'] = $chatFriend;
+            $chat[$key]['chat_friend']['id'] = $chatFriendId;
+            $chat[$key]['latest_msg']['content'] = $message->content;
+            $chat[$key]['latest_msg']['date'] = $message->created_at;
 
         }
 
-        $data['chats'] = $chats;
+        $data['chats'] = $chat;
 
         return view('messages.inbox', $data);
 
@@ -150,13 +156,26 @@ class MessageController extends Controller
 
     public function chat($recipientId)
     {
+
+        $data['recipientId'] = $recipientId;
+
         //TODO add seen and read message functionality
         $data['chat'] = Message::where('recipient_id', $recipientId)
             ->where('sender_id', Auth::id())
             ->orWhere('recipient_id', Auth::id())
             ->where('sender_id', $recipientId)
             ->get();
-        $data['recipientId'] = $recipientId;
+
+        $unreadMsg = Message::where('recipient_id', Auth::id())
+            ->where('is_seen', 0)
+            ->get();
+
+        foreach ($unreadMsg as $msg) {
+
+            $msg->is_seen = 1;
+            $msg->save();
+
+        }
 
         return view('messages.chat', $data);
 
