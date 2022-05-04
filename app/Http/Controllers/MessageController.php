@@ -105,7 +105,7 @@ class MessageController extends Controller
             'is_seen' => 0
         ]);
 
-        return redirect()->route('chat', ['recipientId' => $recipientId]);
+        return redirect()->route('chat', $recipientId);
 
     }
 
@@ -159,7 +159,6 @@ class MessageController extends Controller
 
         $data['recipientId'] = $recipientId;
 
-        //TODO add seen and read message functionality
         $data['chat'] = Message::where('recipient_id', $recipientId)
             ->where('sender_id', Auth::id())
             ->orWhere('recipient_id', Auth::id())

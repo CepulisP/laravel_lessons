@@ -6,7 +6,7 @@
         <h2 class="text-center">Conversations</h2>
         <div class="col-md-8">
             @foreach($chats as $chat)
-                <a href="{{ route('chat', ['recipientId' => $chat['chat_friend']['id']]) }}" class="text-decoration-none text-reset">
+                <a href="{{ route('chat', $chat['chat_friend']['id']) }}" class="text-decoration-none text-reset">
                     <div class="card mt-1">
                         <div class="card-header tex">Chat with {{ $chat['chat_friend']['name'] }}</div>
                         <div class="card-body row">

@@ -66,6 +66,7 @@
                                     <a class="dropdown-item" href="{{ route('inbox.create') }}">New message</a>
                                     <a class="dropdown-item" href="{{ route('ad.create') }}">Add new Ad</a>
                                     <a class="dropdown-item" href="{{ route('profile.ads') }}">My Ads</a>
+                                    <a class="dropdown-item" href="{{ route('profile.saved-ads') }}">Saved Ads</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

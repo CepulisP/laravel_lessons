@@ -30,3 +30,7 @@ Route::resource('/comment', 'App\Http\Controllers\CommentController');
 Route::resource('/inbox', 'App\Http\Controllers\MessageController');
 
 Route::get('/chat/{recipientId}', [App\Http\Controllers\MessageController::class, 'chat'])->name('chat');
+
+Route::get('/ad/save/{adId}', [App\Http\Controllers\AdController::class, 'saveAd'])->name('save');
+
+Route::get('/profile/saved-ads', [App\Http\Controllers\UserPanelController::class, 'savedAds'])->name('profile.saved-ads');

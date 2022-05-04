@@ -9,6 +9,7 @@ use App\Models\CarModel;
 use App\Models\Color;
 use App\Models\Comment;
 use App\Models\Manufacturer;
+use App\Models\SavedAd;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -91,6 +92,7 @@ class AdController extends Controller
 
         $data['ad'] = $ad;
         $data['comments'] = Comment::where('ad_id', $ad->id)->paginate(10);
+        $data['saved'] = SavedAd::where('ad_id', $ad->id)->exists();
 
         return view('ads.single', $data);
 
@@ -184,6 +186,26 @@ class AdController extends Controller
         }
 
         return json_encode($models);
+
+    }
+
+    public function saveAd($adId)
+    {
+
+        $this->middleware('auth');
+
+        $userId = Auth::id();
+
+        if (!SavedAd::where('ad_id', $adId)->where('user_id', $userId)->exists()) {
+
+            SavedAd::create([
+                'user_id' => $userId,
+                'ad_id' => $adId
+            ]);
+
+        }
+
+        return redirect()->route('ad.show', $adId);
 
     }
 }
