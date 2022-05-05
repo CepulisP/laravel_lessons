@@ -10,7 +10,7 @@
                     <div class="card mt-1">
                         <div class="card-header tex">Chat with {{ $chat['chat_friend']['name'] }}</div>
                         <div class="card-body row">
-                            <div class="col-md-9"><b>{{ $chat['latest_sender'] }}: </b>{{ $chat['latest_msg']['content'] }}</div>
+                            <div class="col-md-9"><b>{{ $chat['latest_sender'] }}: </b>{!! $chat['latest_msg']['content'] !!}</div>
                             <div class="col-md-3 text-end">{{ $chat['latest_msg']['date'] }}</div>
                         </div>
                     </div>

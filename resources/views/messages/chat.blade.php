@@ -10,7 +10,7 @@
                         <div class="col-6">{{ ucfirst($msg->sender->name) }}</div>
                         <div class="col-6 text-end">{{ ucfirst($msg->created_at) }}</div>
                     </div>
-                    <div class="card-body">{{ $msg->content }}</div>
+                    <div class="card-body">{!! $msg->content !!}</div>
                 </div>
             </div>
         @endforeach

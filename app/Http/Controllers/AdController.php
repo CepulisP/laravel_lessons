@@ -154,7 +154,7 @@ class AdController extends Controller
             }
 
             $linkToAd = route('ad.show', $ad->id);
-            //TODO make link work
+
             $message = 'Price of <a href=\"' . $linkToAd . '\">' . $ad->title . '</a> has changed from '
                 . $ad->price . '€ to ' . $price . '€';
 
