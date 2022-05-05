@@ -35,7 +35,7 @@ class HomeController extends Controller
     {
 
         $data['popAds'] = Ad::orderby('views', 'ASC')->limit(4)->get();
-        $data['newAds'] = Ad::orderby('updated_at', 'ASC')->limit(4)->get();
+        $data['newAds'] = Ad::orderby('updated_at', 'DESC')->limit(4)->get();
 
         return view('landingpage', $data);
 

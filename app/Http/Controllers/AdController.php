@@ -93,6 +93,7 @@ class AdController extends Controller
         $data['ad'] = $ad;
         $data['comments'] = Comment::where('ad_id', $ad->id)->paginate(10);
         $data['saved'] = SavedAd::where('ad_id', $ad->id)->exists();
+        $data['owner'] = $ad->user_id == Auth::id();
 
         return view('ads.single', $data);
 
@@ -196,12 +197,37 @@ class AdController extends Controller
 
         $userId = Auth::id();
 
-        if (!SavedAd::where('ad_id', $adId)->where('user_id', $userId)->exists()) {
+        if (
+            !SavedAd::where('ad_id', $adId)->where('user_id', $userId)->exists() &&
+            !Ad::where('id', $adId)->where('user_id', $userId)->exists()
+        )
+        {
 
             SavedAd::create([
                 'user_id' => $userId,
                 'ad_id' => $adId
             ]);
+
+        }
+
+        return redirect()->route('ad.show', $adId);
+
+    }
+
+    public function forgetAd($adId)
+    {
+
+        $this->middleware('auth');
+
+        $userId = Auth::id();
+
+        if (
+            SavedAd::where('ad_id', $adId)->where('user_id', $userId)->exists() &&
+            !Ad::where('id', $adId)->where('user_id', $userId)->exists()
+        )
+        {
+
+            $savedAd = SavedAd::where('ad_id', $adId)->where('user_id', $userId)->delete();
 
         }
 
