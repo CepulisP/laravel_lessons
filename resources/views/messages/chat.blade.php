@@ -7,16 +7,10 @@
             <div class="col-7">
                 <div class="card">
                     <div class="card-header row">
-                        <div class="col-6">
-                            {{ ucfirst($msg->sender->name) }}
-                        </div>
-                        <div class="col-6 text-end">
-                            {{ ucfirst($msg->created_at) }}
-                        </div>
+                        <div class="col-6">{{ ucfirst($msg->sender->name) }}</div>
+                        <div class="col-6 text-end">{{ ucfirst($msg->created_at) }}</div>
                     </div>
-                    <div class="card-body">
-                        <p>{{ $msg->content }}</p>
-                    </div>
+                    <div class="card-body">{{ $msg->content }}</div>
                 </div>
             </div>
         @endforeach

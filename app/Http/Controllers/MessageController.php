@@ -180,4 +180,20 @@ class MessageController extends Controller
 
     }
 
+    public static function sysMessage($message, $userIds)
+    {
+
+        foreach ($userIds as $userId) {
+
+            Message::create([
+                'content' => $message,
+                'sender_id' => 1,
+                'recipient_id' => $userId,
+                'is_seen' => 0
+            ]);
+
+        }
+
+    }
+
 }

@@ -9,6 +9,7 @@ use App\Models\CarModel;
 use App\Models\Color;
 use App\Models\Comment;
 use App\Models\Manufacturer;
+use App\Models\Message;
 use App\Models\SavedAd;
 use App\Models\Type;
 use Illuminate\Http\Request;
@@ -92,8 +93,16 @@ class AdController extends Controller
 
         $data['ad'] = $ad;
         $data['comments'] = Comment::where('ad_id', $ad->id)->paginate(10);
-        $data['saved'] = SavedAd::where('ad_id', $ad->id)->exists();
-        $data['owner'] = $ad->user_id == Auth::id();
+
+        if (Auth::check()){
+
+            $userId = Auth::id();
+
+            $data['saved'] = SavedAd::where('ad_id', $ad->id)->where('user_id', $userId)->exists();
+            $data['owner'] = $ad->user_id == $userId;
+
+        }
+
 
         return view('ads.single', $data);
 
@@ -131,11 +140,33 @@ class AdController extends Controller
     public function update(UpdateAdRequest $request, Ad $ad)
     {
 
+        $price = $request->post('price');
+
+        if ($price != $ad->price) {
+
+            $userData = SavedAd::where('ad_id', $ad->id)->get('user_id');
+            $userIds = [];
+
+            foreach ($userData as $element) {
+
+                $userIds[] = $element['user_id'];
+
+            }
+
+            $linkToAd = route('ad.show', $ad->id);
+            //TODO make link work
+            $message = 'Price of <a href=\"' . $linkToAd . '\">' . $ad->title . '</a> has changed from '
+                . $ad->price . '€ to ' . $price . '€';
+
+            MessageController::sysMessage($message, $userIds);
+
+        }
+
         $ad->update([
             'title' => $request->post('title'),
             'content' => $request->post('content'),
             'years' => $request->post('years'),
-            'price' => $request->post('price'),
+            'price' => $price,
             'image' => $request->post('image'),
             'vin' => $request->post('vin'),
             'user_id' => Auth::id(),

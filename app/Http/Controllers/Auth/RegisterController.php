@@ -21,6 +21,7 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
+    //TODO add nicknames
 
     use RegistersUsers;
 
