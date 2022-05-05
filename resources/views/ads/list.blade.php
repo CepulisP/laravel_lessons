@@ -4,7 +4,7 @@
     <div class="container">
         <form method="GET" action="{{ route('ad.index') }}">
             <select name="manufacturer">
-                <option selected value="">- Manufacturer -</option>
+                <option selected value="">- All Manufacturers -</option>
                 <option value="1">BMW</option>
                 <option value="2">Audi</option>
                 <option value="3">VW</option>
@@ -15,19 +15,21 @@
         </form>
         <div class="row justify-content-center">
             @foreach($ads as $ad)
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">{{ $ad->title }}</div>
-                        <div class="card-body">
-                            <img class="img-fluid" src="{{ $ad->image }}">
+                <div class="col-md-3">
+                    <a class="text-decoration-none text-reset" href="{{ route('ad.show', $ad->id) }}">
+                        <div class="card">
+                            <b class="card-header">{{ $ad->title }}</b>
+                            <div class="card-body">
+                                <img class="img-fluid" src="{{ $ad->image }}">
+                            </div>
+                            <div class="card-footer text-end">
+                                <span>{{ $ad->price }}€</span>
+                            </div>
                         </div>
-                        <div class="card-footer">
-                            <span id="lolol">{{ $ad->price }}€</span>
-                            <a class="btn btn-primary float-end" href="{{ route('ad.show', $ad->id) }}">Read more</a>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             @endforeach
+            {{ $ads->links('pagination::bootstrap-4') }}
         </div>
     </div>
 @endsection

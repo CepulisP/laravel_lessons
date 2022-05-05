@@ -26,3 +26,13 @@ Route::post('/getmodels', [App\Http\Controllers\AdController::class, 'getModels'
 Route::get('/profile/ads', [App\Http\Controllers\UserPanelController::class, 'myAds'])->name('profile.ads');
 
 Route::resource('/comment', 'App\Http\Controllers\CommentController');
+
+Route::resource('/inbox', 'App\Http\Controllers\MessageController');
+
+Route::get('/chat/{recipientId}', [App\Http\Controllers\MessageController::class, 'chat'])->name('chat');
+
+Route::get('/ad/save/{adId}', [App\Http\Controllers\AdController::class, 'saveAd'])->name('ad.save');
+
+Route::get('/ad/forget/{adId}', [App\Http\Controllers\AdController::class, 'forgetAd'])->name('ad.forget');
+
+Route::get('/profile/saved-ads', [App\Http\Controllers\UserPanelController::class, 'savedAds'])->name('profile.saved-ads');

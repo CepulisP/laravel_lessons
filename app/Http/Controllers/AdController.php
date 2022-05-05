@@ -7,7 +7,10 @@ use App\Http\Requests\StoreAdRequest;
 use App\Http\Requests\UpdateAdRequest;
 use App\Models\CarModel;
 use App\Models\Color;
+use App\Models\Comment;
 use App\Models\Manufacturer;
+use App\Models\Message;
+use App\Models\SavedAd;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +26,7 @@ class AdController extends Controller
     public function index(Request $request)
     {
 
-        $data['ads'] =Ad::where('active', 1)->filter($request)->get();
+        $data['ads'] =Ad::filter($request)->paginate(8);
 
         return view('ads.list', $data);
 
@@ -54,27 +57,25 @@ class AdController extends Controller
     public function store(StoreAdRequest $request)
     {
 
-        $ad = new Ad();
+        Ad::create([
+            'title' => $request->post('title'),
+            'slug' => Str::slug($request->post('title')),
+            'content' => $request->post('content'),
+            'years' => $request->post('years'),
+            'price' => $request->post('price'),
+            'image' => $request->post('image'),
+            'vin' => $request->post('vin'),
+            'user_id' => Auth::id(),
+            'views' => 0,
+            'active' => 1,
+            'model_id' => $request->post('model_id'),
+            'type_id' => $request->post('type_id'),
+            'category_id' => 1,
+            'color_id' => $request->post('color_id'),
+            'manufacturer_id' => $request->post('manufacturer_id')
+        ]);
 
-        $ad->title = $request->post('title');
-        $ad->slug = Str::slug($ad->title);
-        $ad->content = $request->post('content');
-        $ad->years = $request->post('years');
-        $ad->price = $request->post('price');
-        $ad->image = $request->post('image');
-        $ad->vin = $request->post('vin');
-        $ad->user_id = Auth::id();
-        $ad->views = 0;
-        $ad->active = 1;
-        $ad->model_id = $request->post('model_id');
-        $ad->type_id = $request->post('type_id');
-        $ad->category_id = 1;
-        $ad->color_id = $request->post('color_id');
-        $ad->manufacturer_id = $request->post('manufacturer_id');
-
-        $ad->save();
-
-        return redirect('/ad/' . $ad->id);
+        return redirect()->route('homepage');
 
     }
 
@@ -91,7 +92,17 @@ class AdController extends Controller
         $ad->save();
 
         $data['ad'] = $ad;
-        $data['comments'] = $ad->comments;
+        $data['comments'] = Comment::where('ad_id', $ad->id)->paginate(10);
+
+        if (Auth::check()){
+
+            $userId = Auth::id();
+
+            $data['saved'] = SavedAd::where('ad_id', $ad->id)->where('user_id', $userId)->exists();
+            $data['owner'] = $ad->user_id == $userId;
+
+        }
+
 
         return view('ads.single', $data);
 
@@ -129,23 +140,45 @@ class AdController extends Controller
     public function update(UpdateAdRequest $request, Ad $ad)
     {
 
-        $ad->title = $request->post('title');
-        $ad->content = $request->post('content');
-        $ad->years = $request->post('years');
-        $ad->price = $request->post('price');
-        $ad->image = $request->post('image');
-        $ad->vin = $request->post('vin');
-        $ad->user_id = Auth::id();
-        $ad->active = 1;
-        $ad->model_id = $request->post('model_id');
-        $ad->type_id = $request->post('type_id');
-        $ad->category_id = 1;
-        $ad->color_id = $request->post('color_id');
-        $ad->manufacturer_id = $request->post('manufacturer_id');
+        $price = $request->post('price');
 
-        $ad->save();
+        if ($price != $ad->price) {
 
-        return redirect('/ad/' . $ad->id . '/edit');
+            $userData = SavedAd::where('ad_id', $ad->id)->get('user_id');
+            $userIds = [];
+
+            foreach ($userData as $element) {
+
+                $userIds[] = $element['user_id'];
+
+            }
+
+            $linkToAd = route('ad.show', $ad->id);
+
+            $message = 'Price of <a href=\"' . $linkToAd . '\">' . $ad->title . '</a> has changed from '
+                . $ad->price . '€ to ' . $price . '€';
+
+            MessageController::sysMessage($message, $userIds);
+
+        }
+
+        $ad->update([
+            'title' => $request->post('title'),
+            'content' => $request->post('content'),
+            'years' => $request->post('years'),
+            'price' => $price,
+            'image' => $request->post('image'),
+            'vin' => $request->post('vin'),
+            'user_id' => Auth::id(),
+            'active' => 1,
+            'model_id' => $request->post('model_id'),
+            'type_id' => $request->post('type_id'),
+            'category_id' => 1,
+            'color_id' => $request->post('color_id'),
+            'manufacturer_id' => $request->post('manufacturer_id')
+        ]);
+
+        return redirect()->route('homepage');
 
     }
 
@@ -158,10 +191,11 @@ class AdController extends Controller
     public function destroy(Ad $ad)
     {
 
-        $ad->active = 0;
-        $ad->save();
+        $ad->update([
+            'active' => 0
+        ]);
 
-        return redirect('/profile/ads');
+        return redirect()->route('profile.ads');
 
     }
 
@@ -184,6 +218,36 @@ class AdController extends Controller
         }
 
         return json_encode($models);
+
+    }
+
+    public function saveAd($adId)
+    {
+
+        $this->middleware('auth');
+
+        $userId = Auth::id();
+
+        if (Ad::where('id', $adId)->where('user_id', $userId)->exists()) {
+
+            return redirect()->route('ad.show', $adId);
+
+        }
+
+        if (SavedAd::where('ad_id', $adId)->where('user_id', $userId)->exists()) {
+
+            $savedAd = SavedAd::where('ad_id', $adId)->where('user_id', $userId)->delete();
+
+        } else {
+
+            SavedAd::create([
+                'user_id' => $userId,
+                'ad_id' => $adId
+            ]);
+
+        }
+
+        return redirect()->route('ad.show', $adId);
 
     }
 }
