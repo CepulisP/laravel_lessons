@@ -228,37 +228,22 @@ class AdController extends Controller
 
         $userId = Auth::id();
 
-        if (
-            !SavedAd::where('ad_id', $adId)->where('user_id', $userId)->exists() &&
-            !Ad::where('id', $adId)->where('user_id', $userId)->exists()
-        )
-        {
+        if (Ad::where('id', $adId)->where('user_id', $userId)->exists()) {
+
+            return redirect()->route('ad.show', $adId);
+
+        }
+
+        if (SavedAd::where('ad_id', $adId)->where('user_id', $userId)->exists()) {
+
+            $savedAd = SavedAd::where('ad_id', $adId)->where('user_id', $userId)->delete();
+
+        } else {
 
             SavedAd::create([
                 'user_id' => $userId,
                 'ad_id' => $adId
             ]);
-
-        }
-
-        return redirect()->route('ad.show', $adId);
-
-    }
-
-    public function forgetAd($adId)
-    {
-
-        $this->middleware('auth');
-
-        $userId = Auth::id();
-
-        if (
-            SavedAd::where('ad_id', $adId)->where('user_id', $userId)->exists() &&
-            !Ad::where('id', $adId)->where('user_id', $userId)->exists()
-        )
-        {
-
-            $savedAd = SavedAd::where('ad_id', $adId)->where('user_id', $userId)->delete();
 
         }
 
